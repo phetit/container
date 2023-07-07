@@ -1,0 +1,27 @@
+{
+    "name": "phetit/container",
+    "type": "library",
+    "description": "A simple PHP dependency injection container",
+    "keywords": [
+        "di",
+        "di container",
+        "dependency injection",
+        "dependency injection container"
+    ],
+    "homepage": "https://github.com/phetit/container",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Lombera",
+            "email": "david.lomberlan@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Phetit\\Container\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.1"
+    }
+}
