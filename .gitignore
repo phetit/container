@@ -1,4 +1,7 @@
 # Compsoser
-composer.phar
-composer.lock
+/composer.phar
+/composer.lock
 /vendor/
+
+# PHPCS
+/phpcs.xml
