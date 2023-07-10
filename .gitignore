@@ -9,3 +9,6 @@
 
 # PHPCS
 /phpcs.xml
+
+# PHPStan
+/phpstan.neon
