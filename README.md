@@ -2,7 +2,7 @@
 
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/phetit/container?display_name=tag&sort=semver)](https://github.com/phetit/container/releases/latest)
 [![Packagist](https://img.shields.io/packagist/v/phetit/container)](https://packagist.org/packages/phetit/container)
-![PHP Version](https://poser.pugx.org/phetit/container/require/php)
+![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/phetit/container/php?color=6e71a4)
 [![tests](https://github.com/phetit/container/actions/workflows/tests.yml/badge.svg)](https://github.com/phetit/container/actions/workflows/tests.yml?query=branch%3Amain)
 [![GitHub](https://img.shields.io/github/license/phetit/container)](https://github.com/phetit/container/blob/main/LICENSE)
 
