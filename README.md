@@ -11,7 +11,7 @@
 # Phetit Container
 A simple PHP dependency injection container.
 
-This package is an implementation of [PSR-11](https://www.php-fig.org/psr/psr-11/) container interface.
+This package is an implementation of [PSR-11](https://www.php-fig.org/psr/psr-11/) container interface, and follows the [Semantic Versioning](https://semver.org/spec/v2.0.0.html) specification.
 
 ## Installation
 
