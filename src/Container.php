@@ -30,12 +30,12 @@ class Container implements ContainerInterface
 
     public function has(string $id): bool
     {
-        return isset($this->parameters[$id]) || isset($this->services[$id]);
+        return array_key_exists($id, $this->parameters) || isset($this->services[$id]);
     }
 
     public function get(string $id): mixed
     {
-        if (isset($this->parameters[$id])) {
+        if (array_key_exists($id, $this->parameters)) {
             return $this->parameters[$id];
         }
 

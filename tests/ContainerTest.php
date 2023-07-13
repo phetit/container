@@ -74,4 +74,14 @@ class ContainerTest extends TestCase
 
         self::assertSame('bar', $container->get('foo'));
     }
+
+    public function testResolvesNullValueParameters(): void
+    {
+        $container = new Container();
+
+        $container->parameter('foo', null);
+
+        self::assertTrue($container->has('foo'));
+        self::assertNull($container->get('foo'));
+    }
 }
