@@ -23,10 +23,12 @@ class Container implements ContainerInterface
      */
     protected array $parameters = [];
 
-    public function register(string $id, callable $resolver): void
-    {
-        $this->services[$id] = $resolver;
-    }
+    /**
+     * The container's statics
+     *
+     * @var callable[]
+     */
+    protected array $statics = [];
 
     public function has(string $id): bool
     {
@@ -43,10 +45,36 @@ class Container implements ContainerInterface
             return $this->services[$id]();
         }
 
+        if (isset($this->statics[$id])) {
+            $this->parameters[$id] = $this->statics[$id]();
+
+            return $this->parameters[$id];
+        }
+
         throw new EntryNotFoundException();
     }
+
+    /**
+     * Register a service that is resolved in every call to `get()` method
+     */
+    public function register(string $id, callable $resolver): void
+    {
+        $this->services[$id] = $resolver;
+    }
+
+    /**
+     * Register parameters that returns the value set
+     */
     public function parameter(string $id, mixed $value): void
     {
         $this->parameters[$id] = $value;
+    }
+
+    /**
+     * Register a service that is resolved only the first time `get()` is called
+     */
+    public function static(string $id, callable $resolver): void
+    {
+        $this->statics[$id] = $resolver;
     }
 }

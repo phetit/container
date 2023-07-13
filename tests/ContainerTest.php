@@ -84,4 +84,19 @@ class ContainerTest extends TestCase
         self::assertTrue($container->has('foo'));
         self::assertNull($container->get('foo'));
     }
+
+    public function testServiceShouldBeTheSame(): void
+    {
+        $container = new Container();
+
+        $container->static('service', fn() => new Service());
+
+        $serviceOne = $container->get('service');
+        self::assertInstanceOf(Service::class, $serviceOne);
+
+        $serviceTwo = $container->get('service');
+        self::assertInstanceOf(Service::class, $serviceTwo);
+
+        self::assertSame($serviceOne, $serviceTwo);
+    }
 }
