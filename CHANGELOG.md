@@ -4,8 +4,9 @@
 
 ### Added
 
-- Add `NotFoundException` class
+- Add `parameter(string $id, mixed $value)` method to `Container` class
 - Add `ContainerException` class
+- Add `NotFoundException` class
 
 ### Changed
 

@@ -16,22 +16,37 @@ class Container implements ContainerInterface
      */
     protected array $entries = [];
 
+    /**
+     * The container's parameters
+     *
+     * @var mixed[]
+     */
+    protected array $parameters = [];
+
     public function register(string $id, callable $resolver): void
     {
         $this->entries[$id] = $resolver;
     }
 
+    public function has(string $id): bool
+    {
+        return isset($this->parameters[$id]) || isset($this->entries[$id]);
+    }
+
     public function get(string $id): mixed
     {
-        if ($this->has($id)) {
+        if (isset($this->parameters[$id])) {
+            return $this->parameters[$id];
+        }
+
+        if (isset($this->entries[$id])) {
             return $this->entries[$id]();
         }
 
         throw new EntryNotFoundException();
     }
-
-    public function has(string $id): bool
+    public function parameter(string $id, mixed $value): void
     {
-        return isset($this->entries[$id]);
+        $this->parameters[$id] = $value;
     }
 }

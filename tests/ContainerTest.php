@@ -65,4 +65,13 @@ class ContainerTest extends TestCase
 
         self::assertNotSame($serviceOne, $serviceTwo);
     }
+
+    public function testParameters(): void
+    {
+        $container = new Container();
+
+        $container->parameter('foo', 'bar');
+
+        self::assertSame('bar', $container->get('foo'));
+    }
 }
