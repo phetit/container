@@ -10,11 +10,11 @@ use Psr\Container\ContainerInterface;
 class Container implements ContainerInterface
 {
     /**
-     * The container's entries
+     * The container's services
      *
      * @var callable[]
      */
-    protected array $entries = [];
+    protected array $services = [];
 
     /**
      * The container's parameters
@@ -25,12 +25,12 @@ class Container implements ContainerInterface
 
     public function register(string $id, callable $resolver): void
     {
-        $this->entries[$id] = $resolver;
+        $this->services[$id] = $resolver;
     }
 
     public function has(string $id): bool
     {
-        return isset($this->parameters[$id]) || isset($this->entries[$id]);
+        return isset($this->parameters[$id]) || isset($this->services[$id]);
     }
 
     public function get(string $id): mixed
@@ -39,8 +39,8 @@ class Container implements ContainerInterface
             return $this->parameters[$id];
         }
 
-        if (isset($this->entries[$id])) {
-            return $this->entries[$id]();
+        if (isset($this->services[$id])) {
+            return $this->services[$id]();
         }
 
         throw new EntryNotFoundException();
