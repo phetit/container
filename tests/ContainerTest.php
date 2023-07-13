@@ -6,6 +6,7 @@ namespace Phetit\Container\Tests;
 
 use Phetit\Container\Container;
 use Phetit\Container\Exception\EntryNotFoundException;
+use Phetit\Container\Tests\Fixtures\Service;
 use PHPUnit\Framework\TestCase;
 
 class ContainerTest extends TestCase
@@ -48,5 +49,20 @@ class ContainerTest extends TestCase
         self::expectExceptionObject(new EntryNotFoundException());
 
         $container->get('foo');
+    }
+
+    public function testServicesShouldBeDifferent(): void
+    {
+        $container = new Container();
+
+        $container->register('service', fn() => new Service());
+
+        $serviceOne = $container->get('service');
+        self::assertInstanceOf(Service::class, $serviceOne);
+
+        $serviceTwo = $container->get('service');
+        self::assertInstanceOf(Service::class, $serviceTwo);
+
+        self::assertNotSame($serviceOne, $serviceTwo);
     }
 }
