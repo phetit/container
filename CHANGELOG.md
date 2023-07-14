@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.4.0]
+## [0.4.0] - 2023-07-14
 
 ### Added
 
@@ -16,7 +16,7 @@
 - Remove `static` method
 - Remove `hasStatic` method
 
-## [0.3.0]
+## [0.3.0] - 2023-07-14
 
 ### Added
 
@@ -27,7 +27,7 @@
 
 - Validate not empty identifier is passed
 
-## [0.2.0]
+## [0.2.0] - 2023-07-13
 
 ### Added
 
