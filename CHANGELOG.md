@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Inject container object to service resolver
+
 ## [0.2.0]
 
 ### Added

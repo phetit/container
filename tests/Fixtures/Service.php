@@ -6,4 +6,7 @@ namespace Phetit\Container\Tests\Fixtures;
 
 class Service
 {
+    public function __construct(public int $value = 0)
+    {
+    }
 }

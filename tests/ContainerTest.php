@@ -112,4 +112,30 @@ class ContainerTest extends TestCase
 
         self::assertSame($serviceOne, $serviceTwo);
     }
+
+    public function testContainerShouldBeInjectedToServiceResolver(): void
+    {
+        $container = new Container();
+
+        $container->parameter('value', 67);
+        $container->register('service', fn(Container $c) => new Service($c->get('value')));
+
+        $service = $container->get('service');
+
+        self::assertInstanceOf(Service::class, $service);
+        self::assertSame(67, $service->value);
+    }
+
+    public function testContainerShouldBeInjectedToStaticResolver(): void
+    {
+        $container = new Container();
+
+        $container->parameter('value2', 78);
+        $container->static('service2', fn(Container $c) => new Service($c->get('value2')));
+
+        $service2 = $container->get('service2');
+
+        self::assertInstanceOf(Service::class, $service2);
+        self::assertSame(78, $service2->value);
+    }
 }

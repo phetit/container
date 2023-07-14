@@ -43,8 +43,8 @@ $container->register('foo', fn() => 'bar');
 You can retrieve registered services using the `get($id)` method:
 
 ```php
-// $foo === 'bar'
 $foo = $container->get('foo');
+// $foo === 'bar'
 ```
 
 ### Static services
@@ -77,13 +77,29 @@ You can register parameters using `parameter()` method:
 
 ```php
 $container->parameter('foo', 'bar');
-$container->parameter('func', fn() => 'bazz');
+$container->parameter('func', fn() => new Service());
 
 $container->get('foo'); // 'bar'
 
 // Parameters are not resolved
-$func = $container->get('func'); // $func = fn() => 'bazz'
-$func(); // 'bazz'
+$func = $container->get('func'); // $func = fn() => new Service()
+$service = $func(); // 'Service object'
+```
+
+### Accessing container from a service
+
+Container object is injected to service resolvers, so you can access other entries defined in the container:
+
+```php
+$container->parameter('db_dns', 'mysql:dbname=testdb;host=127.0.0.1');
+$container->parameter('db_user', 'dbuser');
+$container->parameter('db_pass', 'dbpass');
+
+$container->register('db', fn(Container $c) => new PDO(
+    $c->get('db_dns'),
+    $c->get('db_user'),
+    $c->get('db_pass'),
+));
 ```
 
 ## Contributing

@@ -42,11 +42,11 @@ class Container implements ContainerInterface
         }
 
         if (isset($this->services[$id])) {
-            return $this->services[$id]();
+            return $this->services[$id]($this);
         }
 
         if (isset($this->statics[$id])) {
-            $this->parameters[$id] = $this->statics[$id]();
+            $this->parameters[$id] = $this->statics[$id]($this);
 
             return $this->parameters[$id];
         }
