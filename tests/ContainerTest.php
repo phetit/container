@@ -25,10 +25,13 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
 
-        $container->register('foo', fn() => 'bar');
-        $hasEntry = $container->has('foo');
+        $container->parameter('foo', fn() => 'bar');
+        $container->register('foo_service', fn() => 'bar_service');
+        $container->static('foo_static', fn() => 'bar_static');
 
-        self::assertTrue($hasEntry);
+        self::assertTrue($container->has('foo'));
+        self::assertTrue($container->has('foo_service'));
+        self::assertTrue($container->has('foo_static'));
     }
 
     public function testResolvesClosureEntry(): void
