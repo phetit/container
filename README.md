@@ -46,6 +46,46 @@ You can retrieve registered services using the `get($id)` method:
 // $foo === 'bar'
 $foo = $container->get('foo');
 ```
+
+### Static services
+
+By default services are resolved every time you call `get($id)` method.
+
+```php
+$container->register('service' fn() => new Service());
+
+$serviceOne = $container->get('service'); // Service object
+$serviceTwo = $container->get('service'); // Service object
+
+// $serviceOne === $serviceTwo => false
+```
+
+If you want to register a service that is resolved only the first time, you can do it using `static()` method:
+
+```php
+$container->static('service' fn() => new Service());
+
+$serviceOne = $container->get('service'); // Service object
+$serviceTwo = $container->get('service'); // Service object
+
+// $serviceOne === $serviceTwo => true
+```
+
+### Parameters
+
+You can register parameters using `parameter()` method:
+
+```php
+$container->parameter('foo', 'bar');
+$container->parameter('func', fn() => 'bazz');
+
+$container->get('foo'); // 'bar'
+
+// Parameters are not resolved
+$func = $container->get('func'); // $func = fn() => 'bazz'
+$func(); // 'bazz'
+```
+
 ## Contributing
 
 Refer to [CONTRIBUTING](./CONTRIBUTING.md) for information.
