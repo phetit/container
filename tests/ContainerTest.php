@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Phetit\Container\Tests;
 
+use Closure;
 use Phetit\Container\Container;
 use Phetit\Container\Exception\EntryNotFoundException;
 use Phetit\Container\Tests\Fixtures\Service;
@@ -73,6 +74,18 @@ class ContainerTest extends TestCase
         $container->parameter('foo', 'bar');
 
         self::assertSame('bar', $container->get('foo'));
+    }
+
+    public function testPArametersAreNotResolved(): void
+    {
+        $container = new Container();
+
+        $container->parameter('foo', fn () => 'bazz');
+
+        $foo = $container->get('foo');
+
+        self::assertInstanceOf(Closure::class, $foo);
+        self::assertSame('bazz', $foo());
     }
 
     public function testResolvesNullValueParameters(): void
