@@ -1,6 +1,22 @@
 # Changelog
 
-## [Unreleased]
+## [0.4.0]
+
+### Added
+
+- Add `factory` method to register non shared services
+- Add `hasFactory` method
+
+### Changed
+
+- Services registered with `register` method now are shared on all calls to `get($id)`
+
+### Removed
+
+- Remove `static` method
+- Remove `hasStatic` method
+
+## [0.3.0]
 
 ### Added
 
@@ -24,6 +40,7 @@
 
 - Changed `EntryNotFoundException` parent from `\InvalidArgumentException` to `NotFoundException`
 
-[Unreleased]: https://github.com/phetit/container/compare/v0.2.0...main
-
+[Unreleased]: https://github.com/phetit/container/compare/v0.4.0...main
+[0.4.0]: https://github.com/phetit/container/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/phetit/container/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/phetit/container/compare/v0.1.0...v0.2.0

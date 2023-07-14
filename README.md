@@ -47,9 +47,9 @@ $foo = $container->get('foo');
 // $foo === 'bar'
 ```
 
-### Static services
+### Non shared services
 
-By default services are resolved every time you call `get($id)` method.
+By default all services are shared. This means that services are resolved only the first time `get($id)` method is called. So in following calls you'll get the same object.
 
 ```php
 $container->register('service' fn() => new Service());
@@ -57,18 +57,18 @@ $container->register('service' fn() => new Service());
 $serviceOne = $container->get('service'); // Service object
 $serviceTwo = $container->get('service'); // Service object
 
-// $serviceOne === $serviceTwo => false
+// $serviceOne === $serviceTwo => true
 ```
 
-If you want to register a service that is resolved only the first time, you can do it using `static()` method:
+In order to get a new instance on every call, you need to use the `factory()` method:
 
 ```php
-$container->static('service' fn() => new Service());
+$container->factory('service' fn() => new Service());
 
 $serviceOne = $container->get('service'); // Service object
 $serviceTwo = $container->get('service'); // Service object
 
-// $serviceOne === $serviceTwo => true
+// $serviceOne === $serviceTwo => false
 ```
 
 ### Parameters
@@ -77,13 +77,13 @@ You can register parameters using `parameter()` method:
 
 ```php
 $container->parameter('foo', 'bar');
-$container->parameter('func', fn() => new Service());
+$container->parameter('closure', fn() => new Service());
 
 $container->get('foo'); // 'bar'
 
 // Parameters are not resolved
-$func = $container->get('func'); // $func = fn() => new Service()
-$service = $func(); // 'Service object'
+$closure = $container->get('closure'); // $closure = fn() => new Service()
+$service = $closure(); // 'Service object'
 ```
 
 ### Accessing container from a service
