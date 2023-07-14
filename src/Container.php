@@ -33,20 +33,20 @@ class Container implements ContainerInterface
 
     public function has(string $id): bool
     {
-        return array_key_exists($id, $this->parameters) || isset($this->services[$id]) || isset($this->statics[$id]);
+        return $this->hasParameter($id) || $this->hasService($id) || $this->hasStatic($id);
     }
 
     public function get(string $id): mixed
     {
-        if (array_key_exists($id, $this->parameters)) {
+        if ($this->hasParameter($id)) {
             return $this->parameters[$id];
         }
 
-        if (isset($this->services[$id])) {
+        if ($this->hasService($id)) {
             return $this->services[$id]($this);
         }
 
-        if (isset($this->statics[$id])) {
+        if ($this->hasStatic($id)) {
             $this->parameters[$id] = $this->statics[$id]($this);
 
             return $this->parameters[$id];
@@ -95,5 +95,29 @@ class Container implements ContainerInterface
         if ($id === '') {
             throw new InvalidEntryIdentifierException($id);
         }
+    }
+
+    /**
+     * Returns true is a parameter exists under the given identifier.
+     */
+    public function hasParameter(string $id): bool
+    {
+        return array_key_exists($id, $this->parameters);
+    }
+
+    /**
+     * Returns true is a service exists under the given identifier.
+     */
+    public function hasService(string $id): bool
+    {
+        return isset($this->services[$id]);
+    }
+
+    /**
+     * Returns true is a static service exists under the given identifier.
+     */
+    public function hasStatic(string $id): bool
+    {
+        return isset($this->statics[$id]);
     }
 }

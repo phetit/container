@@ -4,6 +4,7 @@
 
 ### Added
 
+- Add `hasParameter`, `hasService` and `hasStatic` methods
 - Inject container object to service resolver
 
 ### Fixed
