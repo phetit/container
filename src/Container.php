@@ -10,18 +10,18 @@ use Psr\Container\ContainerInterface;
 class Container implements ContainerInterface
 {
     /**
-     * The container's services
-     *
-     * @var callable[]
-     */
-    protected array $services = [];
-
-    /**
      * The container's parameters
      *
      * @var mixed[]
      */
     protected array $parameters = [];
+
+    /**
+     * The container's services
+     *
+     * @var callable[]
+     */
+    protected array $services = [];
 
     /**
      * The container's statics
@@ -55,19 +55,19 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Register a service that is resolved in every call to `get()` method
-     */
-    public function register(string $id, callable $resolver): void
-    {
-        $this->services[$id] = $resolver;
-    }
-
-    /**
      * Register parameters that returns the value set
      */
     public function parameter(string $id, mixed $value): void
     {
         $this->parameters[$id] = $value;
+    }
+
+    /**
+     * Register a service that is resolved in every call to `get()` method
+     */
+    public function register(string $id, callable $resolver): void
+    {
+        $this->services[$id] = $resolver;
     }
 
     /**
