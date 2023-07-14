@@ -28,18 +28,18 @@ class ContainerTest extends TestCase
 
         $container->parameter('foo', fn() => 'bar');
         $container->register('foo_service', fn() => 'bar_service');
-        $container->static('foo_static', fn() => 'bar_static');
+        $container->factory('foo_factory', fn() => 'bar_factory');
 
         self::assertTrue($container->has('foo'));
         self::assertTrue($container->has('foo_service'));
-        self::assertTrue($container->has('foo_static'));
+        self::assertTrue($container->has('foo_factory'));
     }
 
     public function testResolvesClosureEntry(): void
     {
         $container = new Container();
 
-        $container->register('foo', fn() => 'bar');
+        $container->factory('foo', fn() => 'bar');
 
         $resolve = $container->get('foo');
 
@@ -56,11 +56,26 @@ class ContainerTest extends TestCase
         $container->get('foo');
     }
 
-    public function testServicesShouldBeDifferent(): void
+    public function testServiceShouldBeTheSame(): void
     {
         $container = new Container();
 
-        $container->register('service', fn() => new Service());
+        $container->register('service', fn () => new Service());
+
+        $serviceOne = $container->get('service');
+        self::assertInstanceOf(Service::class, $serviceOne);
+
+        $serviceTwo = $container->get('service');
+        self::assertInstanceOf(Service::class, $serviceTwo);
+
+        self::assertSame($serviceOne, $serviceTwo);
+    }
+
+    public function testFactoriesShouldBeDifferent(): void
+    {
+        $container = new Container();
+
+        $container->factory('service', fn() => new Service());
 
         $serviceOne = $container->get('service');
         self::assertInstanceOf(Service::class, $serviceOne);
@@ -71,7 +86,7 @@ class ContainerTest extends TestCase
         self::assertNotSame($serviceOne, $serviceTwo);
     }
 
-    public function testParameters(): void
+    public function testSettingParameters(): void
     {
         $container = new Container();
 
@@ -102,40 +117,12 @@ class ContainerTest extends TestCase
         self::assertNull($container->get('foo'));
     }
 
-    public function testServiceShouldBeTheSame(): void
-    {
-        $container = new Container();
-
-        $container->static('service', fn() => new Service());
-
-        $serviceOne = $container->get('service');
-        self::assertInstanceOf(Service::class, $serviceOne);
-
-        $serviceTwo = $container->get('service');
-        self::assertInstanceOf(Service::class, $serviceTwo);
-
-        self::assertSame($serviceOne, $serviceTwo);
-    }
-
     public function testContainerShouldBeInjectedToServiceResolver(): void
     {
         $container = new Container();
 
-        $container->parameter('value', 67);
-        $container->register('service', fn(Container $c) => new Service($c->get('value')));
-
-        $service = $container->get('service');
-
-        self::assertInstanceOf(Service::class, $service);
-        self::assertSame(67, $service->value);
-    }
-
-    public function testContainerShouldBeInjectedToStaticResolver(): void
-    {
-        $container = new Container();
-
         $container->parameter('value2', 78);
-        $container->static('service2', fn(Container $c) => new Service($c->get('value2')));
+        $container->register('service2', fn(Container $c) => new Service($c->get('value2')));
 
         $service2 = $container->get('service2');
 
@@ -143,7 +130,20 @@ class ContainerTest extends TestCase
         self::assertSame(78, $service2->value);
     }
 
-    public function testExceptionShouldBeThrownRegisteringParameterWithEmptyId(): void
+    public function testContainerShouldBeInjectedToFactoryResolver(): void
+    {
+        $container = new Container();
+
+        $container->parameter('value', 67);
+        $container->factory('service', fn (Container $c) => new Service($c->get('value')));
+
+        $service = $container->get('service');
+
+        self::assertInstanceOf(Service::class, $service);
+        self::assertSame(67, $service->value);
+    }
+
+    public function testExceptionShouldBeThrownSettingParameterWithEmptyId(): void
     {
         $container = new Container();
 
@@ -151,19 +151,19 @@ class ContainerTest extends TestCase
         $container->parameter('', 'empty');
     }
 
-    public function testExceptionShouldBeThrownRegisteringServiceWithEmptyId(): void
+    public function testExceptionShouldBeThrownSettingServiceWithEmptyId(): void
     {
         $container = new Container();
 
         self::expectException(InvalidArgumentException::class);
-        $container->register('', fn() => new Service());
+        $container->register('', fn () => new Service());
     }
 
-    public function testExceptionShouldBeThrownRegisteringStaticWithEmptyId(): void
+    public function testExceptionShouldBeThrownSettingFactoryWithEmptyId(): void
     {
         $container = new Container();
 
         self::expectException(InvalidArgumentException::class);
-        $container->static('', fn () => new Service());
+        $container->factory('', fn() => new Service());
     }
 }

@@ -25,15 +25,15 @@ class Container implements ContainerInterface
     protected array $services = [];
 
     /**
-     * The container's statics
+     * The container's factories
      *
      * @var callable[]
      */
-    protected array $statics = [];
+    protected array $factories = [];
 
     public function has(string $id): bool
     {
-        return $this->hasParameter($id) || $this->hasService($id) || $this->hasStatic($id);
+        return $this->hasParameter($id) || $this->hasService($id) || $this->hasFactory($id);
     }
 
     public function get(string $id): mixed
@@ -43,13 +43,13 @@ class Container implements ContainerInterface
         }
 
         if ($this->hasService($id)) {
-            return $this->services[$id]($this);
-        }
-
-        if ($this->hasStatic($id)) {
-            $this->parameters[$id] = $this->statics[$id]($this);
+            $this->parameters[$id] = $this->services[$id]($this);
 
             return $this->parameters[$id];
+        }
+
+        if ($this->hasFactory($id)) {
+            return $this->factories[$id]($this);
         }
 
         throw new EntryNotFoundException();
@@ -66,7 +66,7 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Register a service that is resolved in every call to `get()` method
+     * Register a service that is resolved only the first time `get()` is called
      */
     public function register(string $id, callable $resolver): void
     {
@@ -76,13 +76,13 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Register a service that is resolved only the first time `get()` is called
+     * Register a service that is resolved in every call to `get()` method
      */
-    public function static(string $id, callable $resolver): void
+    public function factory(string $id, callable $resolver): void
     {
         $this->validateIdentifier($id);
 
-        $this->statics[$id] = $resolver;
+        $this->factories[$id] = $resolver;
     }
 
     /**
@@ -116,8 +116,8 @@ class Container implements ContainerInterface
     /**
      * Returns true is a static service exists under the given identifier.
      */
-    public function hasStatic(string $id): bool
+    public function hasFactory(string $id): bool
     {
-        return isset($this->statics[$id]);
+        return isset($this->factories[$id]);
     }
 }
