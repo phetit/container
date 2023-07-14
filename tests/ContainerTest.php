@@ -76,7 +76,7 @@ class ContainerTest extends TestCase
         self::assertSame('bar', $container->get('foo'));
     }
 
-    public function testPArametersAreNotResolved(): void
+    public function testParametersAreNotResolved(): void
     {
         $container = new Container();
 
