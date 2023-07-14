@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phetit\Container;
 
 use Phetit\Container\Exception\EntryNotFoundException;
+use Phetit\Container\Exception\InvalidEntryIdentifierException;
 use Psr\Container\ContainerInterface;
 
 class Container implements ContainerInterface
@@ -59,6 +60,8 @@ class Container implements ContainerInterface
      */
     public function parameter(string $id, mixed $value): void
     {
+        $this->validateIdentifier($id);
+
         $this->parameters[$id] = $value;
     }
 
@@ -67,6 +70,8 @@ class Container implements ContainerInterface
      */
     public function register(string $id, callable $resolver): void
     {
+        $this->validateIdentifier($id);
+
         $this->services[$id] = $resolver;
     }
 
@@ -75,6 +80,20 @@ class Container implements ContainerInterface
      */
     public function static(string $id, callable $resolver): void
     {
+        $this->validateIdentifier($id);
+
         $this->statics[$id] = $resolver;
+    }
+
+    /**
+     * Validate entry identifier
+     *
+     * @throws InvalidEntryIdentifierException if $id is an empty string.
+     */
+    protected function validateIdentifier(string $id): void
+    {
+        if ($id === '') {
+            throw new InvalidEntryIdentifierException($id);
+        }
     }
 }

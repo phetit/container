@@ -6,6 +6,10 @@
 
 - Inject container object to service resolver
 
+### Fixed
+
+- Validate not empty identifier is passed
+
 ## [0.2.0]
 
 ### Added

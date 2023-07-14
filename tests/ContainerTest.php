@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phetit\Container\Tests;
 
 use Closure;
+use InvalidArgumentException;
 use Phetit\Container\Container;
 use Phetit\Container\Exception\EntryNotFoundException;
 use Phetit\Container\Tests\Fixtures\Service;
@@ -140,5 +141,29 @@ class ContainerTest extends TestCase
 
         self::assertInstanceOf(Service::class, $service2);
         self::assertSame(78, $service2->value);
+    }
+
+    public function testExceptionShouldBeThrownRegisteringParameterWithEmptyId(): void
+    {
+        $container = new Container();
+
+        self::expectException(InvalidArgumentException::class);
+        $container->parameter('', 'empty');
+    }
+
+    public function testExceptionShouldBeThrownRegisteringServiceWithEmptyId(): void
+    {
+        $container = new Container();
+
+        self::expectException(InvalidArgumentException::class);
+        $container->register('', fn() => new Service());
+    }
+
+    public function testExceptionShouldBeThrownRegisteringStaticWithEmptyId(): void
+    {
+        $container = new Container();
+
+        self::expectException(InvalidArgumentException::class);
+        $container->static('', fn () => new Service());
     }
 }
