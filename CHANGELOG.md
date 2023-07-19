@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Thrown exception when an already registered identifier is being used.
+
 ## [0.5.0] - 2023-07-19
 
 ### Changed

@@ -7,6 +7,7 @@ namespace Phetit\DependencyInjection\Tests;
 use Closure;
 use InvalidArgumentException;
 use Phetit\DependencyInjection\Container;
+use Phetit\DependencyInjection\Exception\DuplicateEntryIdentifierException;
 use Phetit\DependencyInjection\Exception\EntryNotFoundException;
 use Phetit\DependencyInjection\Tests\Fixtures\Service;
 use PHPUnit\Framework\TestCase;
@@ -165,5 +166,35 @@ class ContainerTest extends TestCase
 
         self::expectException(InvalidArgumentException::class);
         $container->factory('', fn() => new Service());
+    }
+
+    public function testExceptionShouldBeThrownWithDuplicateServiceId(): void
+    {
+        $container = new Container();
+
+        $container->parameter('foo', 'bar');
+
+        self::expectException(DuplicateEntryIdentifierException::class);
+        $container->register('foo', fn() => new Service());
+    }
+
+    public function testExceptionShouldBeThrownWithDuplicateParameterId(): void
+    {
+        $container = new Container();
+
+        $container->factory('foo', fn() => new Service());
+
+        self::expectException(DuplicateEntryIdentifierException::class);
+        $container->parameter('foo', 'bar');
+    }
+
+    public function testExceptionShouldBeThrownWithDuplicateFactoryId(): void
+    {
+        $container = new Container();
+
+        $container->register('foo', fn() => new Service());
+
+        self::expectException(DuplicateEntryIdentifierException::class);
+        $container->factory('foo', fn () => new Service());
     }
 }

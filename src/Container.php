@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Phetit\DependencyInjection;
 
+use Phetit\DependencyInjection\Exception\DuplicateEntryIdentifierException;
 use Phetit\DependencyInjection\Exception\EntryNotFoundException;
 use Phetit\DependencyInjection\Exception\InvalidEntryIdentifierException;
 use Psr\Container\ContainerInterface;
@@ -94,6 +95,10 @@ class Container implements ContainerInterface
     {
         if ($id === '') {
             throw new InvalidEntryIdentifierException($id);
+        }
+
+        if ($this->has($id)) {
+            throw new DuplicateEntryIdentifierException($id);
         }
     }
 
