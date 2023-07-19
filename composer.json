@@ -1,5 +1,5 @@
 {
-    "name": "phetit/container",
+    "name": "phetit/dependency-injection",
     "type": "library",
     "description": "A simple PHP dependency injection container",
     "keywords": [
@@ -8,7 +8,7 @@
         "dependency injection",
         "dependency injection container"
     ],
-    "homepage": "https://github.com/phetit/container",
+    "homepage": "https://github.com/phetit/dependency-injection",
     "license": "MIT",
     "authors": [
         {

@@ -1,10 +1,10 @@
 <div align="center">
 
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/phetit/container?display_name=tag&sort=semver)](https://github.com/phetit/container/releases/latest)
-[![Packagist](https://img.shields.io/packagist/v/phetit/container)](https://packagist.org/packages/phetit/container)
-![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/phetit/container/php?color=6e71a4)
-[![tests](https://github.com/phetit/container/actions/workflows/tests.yml/badge.svg)](https://github.com/phetit/container/actions/workflows/tests.yml?query=branch%3Amain)
-[![GitHub](https://img.shields.io/github/license/phetit/container)](https://github.com/phetit/container/blob/main/LICENSE)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/phetit/dependency-injection?display_name=tag&sort=semver)](https://github.com/phetit/dependency-injection/releases/latest)
+[![Packagist](https://img.shields.io/packagist/v/phetit/dependency-injection)](https://packagist.org/packages/phetit/dependency-injection)
+![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/phetit/dependency-injection/php?color=6e71a4)
+[![tests](https://github.com/phetit/dependency-injection/actions/workflows/tests.yml/badge.svg)](https://github.com/phetit/dependency-injection/actions/workflows/tests.yml?query=branch%3Amain)
+[![GitHub](https://img.shields.io/github/license/phetit/dependency-injection)](https://github.com/phetit/dependency-injection/blob/main/LICENSE)
 
 </div>
 
@@ -18,7 +18,7 @@ This package is an implementation of [PSR-11](https://www.php-fig.org/psr/psr-11
 You can install it using [composer](https://getcomposer.org/):
 
 ```bash
-composer require phetit/container
+composer require phetit/dependency-injection
 ```
 ## Usage
 
@@ -108,4 +108,4 @@ Refer to [CONTRIBUTING](./CONTRIBUTING.md) for information.
 
 ## License
 
-[MIT](https://github.com/phetit/container/blob/main/LICENSE)
+[MIT](https://github.com/phetit/dependency-injection/blob/main/LICENSE)
