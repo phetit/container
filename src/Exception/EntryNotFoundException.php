@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Phetit\Container\Exception;
+namespace Phetit\DependencyInjection\Exception;
 
 /**
  * This exceptions is thrown when no-existent entry is requested.

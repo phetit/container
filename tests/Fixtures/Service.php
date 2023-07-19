@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Phetit\Container\Tests\Fixtures;
+namespace Phetit\DependencyInjection\Tests\Fixtures;
 
 class Service
 {

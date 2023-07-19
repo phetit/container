@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Phetit\Container;
+namespace Phetit\DependencyInjection;
 
-use Phetit\Container\Exception\EntryNotFoundException;
-use Phetit\Container\Exception\InvalidEntryIdentifierException;
+use Phetit\DependencyInjection\Exception\EntryNotFoundException;
+use Phetit\DependencyInjection\Exception\InvalidEntryIdentifierException;
 use Psr\Container\ContainerInterface;
 
 class Container implements ContainerInterface

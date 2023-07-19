@@ -4,6 +4,7 @@
 
 ### Changed
 
+- **Breaking:** change namespace from `Phetit\Container` to `Phetit\DependencyInjection`
 - **Breaking:** rename package from `phetit/container` to `phetit/dependency-injection`
 
 ## [0.4.0] - 2023-07-14

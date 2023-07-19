@@ -25,7 +25,7 @@ composer require phetit/dependency-injection
 Create an instance of `Container` class.
 
 ```php
-use Phetit\Container\Container;
+use Phetit\DependencyInjection\Container;
 
 $container = new Container();
 ```

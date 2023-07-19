@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Phetit\Container\Exception;
+namespace Phetit\DependencyInjection\Exception;
 
 use InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;

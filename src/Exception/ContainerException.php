@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Phetit\Container\Exception;
+namespace Phetit\DependencyInjection\Exception;
 
 use Psr\Container\ContainerExceptionInterface;
 use RuntimeException;

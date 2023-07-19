@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Phetit\Container\Tests;
+namespace Phetit\DependencyInjection\Tests;
 
 use Closure;
 use InvalidArgumentException;
-use Phetit\Container\Container;
-use Phetit\Container\Exception\EntryNotFoundException;
-use Phetit\Container\Tests\Fixtures\Service;
+use Phetit\DependencyInjection\Container;
+use Phetit\DependencyInjection\Exception\EntryNotFoundException;
+use Phetit\DependencyInjection\Tests\Fixtures\Service;
 use PHPUnit\Framework\TestCase;
 
 class ContainerTest extends TestCase

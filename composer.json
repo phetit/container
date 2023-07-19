@@ -18,12 +18,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Phetit\\Container\\": "src/"
+            "Phetit\\DependencyInjection\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Phetit\\Container\\Tests\\": "tests/"
+            "Phetit\\DependencyInjection\\Tests\\": "tests/"
         }
     },
     "require": {
