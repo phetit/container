@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking:** `register()` now receives `ResolverInterface` as second parameter
+
+### Removed
+
+- **Breaking:** remove `factory()` method
+- **Breaking:** remove `hasFactory()` method
+
 ### Fixed
 
 - Thrown exception when an already registered identifier is being used.

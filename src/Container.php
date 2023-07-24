@@ -7,6 +7,7 @@ namespace Phetit\DependencyInjection;
 use Phetit\DependencyInjection\Exception\DuplicateEntryIdentifierException;
 use Phetit\DependencyInjection\Exception\EntryNotFoundException;
 use Phetit\DependencyInjection\Exception\InvalidEntryIdentifierException;
+use Phetit\DependencyInjection\Resolver\ResolverInterface;
 use Psr\Container\ContainerInterface;
 
 class Container implements ContainerInterface
@@ -21,20 +22,13 @@ class Container implements ContainerInterface
     /**
      * The container's services
      *
-     * @var callable[]
+     * @var ResolverInterface[]
      */
     protected array $services = [];
 
-    /**
-     * The container's factories
-     *
-     * @var callable[]
-     */
-    protected array $factories = [];
-
     public function has(string $id): bool
     {
-        return $this->hasParameter($id) || $this->hasService($id) || $this->hasFactory($id);
+        return $this->hasParameter($id) || $this->hasService($id);
     }
 
     public function get(string $id): mixed
@@ -44,13 +38,7 @@ class Container implements ContainerInterface
         }
 
         if ($this->hasService($id)) {
-            $this->parameters[$id] = $this->services[$id]($this);
-
-            return $this->parameters[$id];
-        }
-
-        if ($this->hasFactory($id)) {
-            return $this->factories[$id]($this);
+            return $this->services[$id]->resolve($this);
         }
 
         throw new EntryNotFoundException();
@@ -58,6 +46,9 @@ class Container implements ContainerInterface
 
     /**
      * Register parameters that returns the value set
+     *
+     * @param string $id Parameter identifier
+     * @param mixed $value Parameter value
      */
     public function parameter(string $id, mixed $value): void
     {
@@ -67,23 +58,16 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Register a service that is resolved only the first time `get()` is called
+     * Register a service to the container
+     *
+     * @param string $id Service identifier
+     * @param ResolverInterface $resolver The service resolver
      */
-    public function register(string $id, callable $resolver): void
+    public function register(string $id, ResolverInterface $resolver): void
     {
         $this->validateIdentifier($id);
 
         $this->services[$id] = $resolver;
-    }
-
-    /**
-     * Register a service that is resolved in every call to `get()` method
-     */
-    public function factory(string $id, callable $resolver): void
-    {
-        $this->validateIdentifier($id);
-
-        $this->factories[$id] = $resolver;
     }
 
     /**
@@ -116,13 +100,5 @@ class Container implements ContainerInterface
     public function hasService(string $id): bool
     {
         return isset($this->services[$id]);
-    }
-
-    /**
-     * Returns true is a static service exists under the given identifier.
-     */
-    public function hasFactory(string $id): bool
-    {
-        return isset($this->factories[$id]);
     }
 }

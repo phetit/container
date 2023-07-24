@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Phetit\DependencyInjection\Tests;
 
 use Closure;
-use InvalidArgumentException;
 use Phetit\DependencyInjection\Container;
 use Phetit\DependencyInjection\Exception\DuplicateEntryIdentifierException;
 use Phetit\DependencyInjection\Exception\EntryNotFoundException;
-use Phetit\DependencyInjection\Tests\Fixtures\Service;
+use Phetit\DependencyInjection\Exception\InvalidEntryIdentifierException;
+use Phetit\DependencyInjection\Resolver\ResolverInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ContainerTest extends TestCase
@@ -27,24 +28,26 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
 
-        $container->parameter('foo', fn() => 'bar');
-        $container->register('foo_service', fn() => 'bar_service');
-        $container->factory('foo_factory', fn() => 'bar_factory');
-
+        $container->parameter('foo', 'bar');
         self::assertTrue($container->has('foo'));
-        self::assertTrue($container->has('foo_service'));
-        self::assertTrue($container->has('foo_factory'));
+
+        $container->register('service', $this->createMock(ResolverInterface::class));
+        self::assertTrue($container->has('service'));
     }
 
-    public function testResolvesClosureEntry(): void
+    public function testShouldCallResolveMethodInResolverPassingSelfReference(): void
     {
         $container = new Container();
+        $container->parameter('bar', 45);
 
-        $container->factory('foo', fn() => 'bar');
+        /** @var ResolverInterface&MockObject */
+        $service = $this->createMock(ResolverInterface::class);
+        $service->expects(self::once())
+                ->method('resolve')
+                ->with(self::isInstanceOf(Container::class));
 
-        $resolve = $container->get('foo');
-
-        self::assertEquals('bar', $resolve);
+        $container->register('foo', $service);
+        $container->get('foo');
     }
 
     public function testThrowsExceptionWhenTryingToResolveMissingEntry(): void
@@ -57,37 +60,7 @@ class ContainerTest extends TestCase
         $container->get('foo');
     }
 
-    public function testServiceShouldBeTheSame(): void
-    {
-        $container = new Container();
-
-        $container->register('service', fn () => new Service());
-
-        $serviceOne = $container->get('service');
-        self::assertInstanceOf(Service::class, $serviceOne);
-
-        $serviceTwo = $container->get('service');
-        self::assertInstanceOf(Service::class, $serviceTwo);
-
-        self::assertSame($serviceOne, $serviceTwo);
-    }
-
-    public function testFactoriesShouldBeDifferent(): void
-    {
-        $container = new Container();
-
-        $container->factory('service', fn() => new Service());
-
-        $serviceOne = $container->get('service');
-        self::assertInstanceOf(Service::class, $serviceOne);
-
-        $serviceTwo = $container->get('service');
-        self::assertInstanceOf(Service::class, $serviceTwo);
-
-        self::assertNotSame($serviceOne, $serviceTwo);
-    }
-
-    public function testSettingParameters(): void
+    public function testShouldSetParameters(): void
     {
         $container = new Container();
 
@@ -118,54 +91,30 @@ class ContainerTest extends TestCase
         self::assertNull($container->get('foo'));
     }
 
-    public function testContainerShouldBeInjectedToServiceResolver(): void
+    public function testExceptionShouldBeThrownRegisteringParameterWithEmptyId(): void
     {
         $container = new Container();
 
-        $container->parameter('value2', 78);
-        $container->register('service2', fn(Container $c) => new Service($c->get('value2')));
-
-        $service2 = $container->get('service2');
-
-        self::assertInstanceOf(Service::class, $service2);
-        self::assertSame(78, $service2->value);
-    }
-
-    public function testContainerShouldBeInjectedToFactoryResolver(): void
-    {
-        $container = new Container();
-
-        $container->parameter('value', 67);
-        $container->factory('service', fn (Container $c) => new Service($c->get('value')));
-
-        $service = $container->get('service');
-
-        self::assertInstanceOf(Service::class, $service);
-        self::assertSame(67, $service->value);
-    }
-
-    public function testExceptionShouldBeThrownSettingParameterWithEmptyId(): void
-    {
-        $container = new Container();
-
-        self::expectException(InvalidArgumentException::class);
+        self::expectException(InvalidEntryIdentifierException::class);
         $container->parameter('', 'empty');
     }
 
-    public function testExceptionShouldBeThrownSettingServiceWithEmptyId(): void
+    public function testExceptionShouldBeThrownRegisteringServiceWithEmptyId(): void
     {
         $container = new Container();
 
-        self::expectException(InvalidArgumentException::class);
-        $container->register('', fn () => new Service());
+        self::expectException(InvalidEntryIdentifierException::class);
+        $container->register('', $this->createMock(ResolverInterface::class));
     }
 
-    public function testExceptionShouldBeThrownSettingFactoryWithEmptyId(): void
+    public function testExceptionShouldBeThrownWithDuplicateParameterId(): void
     {
         $container = new Container();
 
-        self::expectException(InvalidArgumentException::class);
-        $container->factory('', fn() => new Service());
+        $container->register('foo', $this->createMock(ResolverInterface::class));
+
+        self::expectException(DuplicateEntryIdentifierException::class);
+        $container->parameter('foo', 'bar');
     }
 
     public function testExceptionShouldBeThrownWithDuplicateServiceId(): void
@@ -175,26 +124,6 @@ class ContainerTest extends TestCase
         $container->parameter('foo', 'bar');
 
         self::expectException(DuplicateEntryIdentifierException::class);
-        $container->register('foo', fn() => new Service());
-    }
-
-    public function testExceptionShouldBeThrownWithDuplicateParameterId(): void
-    {
-        $container = new Container();
-
-        $container->factory('foo', fn() => new Service());
-
-        self::expectException(DuplicateEntryIdentifierException::class);
-        $container->parameter('foo', 'bar');
-    }
-
-    public function testExceptionShouldBeThrownWithDuplicateFactoryId(): void
-    {
-        $container = new Container();
-
-        $container->register('foo', fn() => new Service());
-
-        self::expectException(DuplicateEntryIdentifierException::class);
-        $container->factory('foo', fn () => new Service());
+        $container->register('foo', $this->createMock(ResolverInterface::class));
     }
 }
