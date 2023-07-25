@@ -4,6 +4,7 @@
 
 ### Added
 
+- Add ability to replace existing parameter/service
 - Add `Resolver\ServiceResolver` class
 - Add `Resolver\FactoryServiceResolver` class
 

@@ -54,6 +54,10 @@ class Container implements ContainerInterface
     {
         $this->validateIdentifier($id);
 
+        if ($this->hasService($id)) {
+            throw new DuplicateEntryIdentifierException($id);
+        }
+
         $this->parameters[$id] = $value;
     }
 
@@ -67,6 +71,10 @@ class Container implements ContainerInterface
     {
         $this->validateIdentifier($id);
 
+        if ($this->hasParameter($id)) {
+            throw new DuplicateEntryIdentifierException($id);
+        }
+
         $this->services[$id] = $resolver;
     }
 
@@ -79,10 +87,6 @@ class Container implements ContainerInterface
     {
         if ($id === '') {
             throw new InvalidEntryIdentifierException($id);
-        }
-
-        if ($this->has($id)) {
-            throw new DuplicateEntryIdentifierException($id);
         }
     }
 

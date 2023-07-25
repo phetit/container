@@ -107,7 +107,7 @@ class ContainerTest extends TestCase
         $container->set('', $this->createMock(ResolverInterface::class));
     }
 
-    public function testExceptionShouldBeThrownWithDuplicateParameterId(): void
+    public function testExceptionShouldBeThrownTryingToSetParameterWithExistingServiceId(): void
     {
         $container = new Container();
 
@@ -117,7 +117,7 @@ class ContainerTest extends TestCase
         $container->parameter('foo', 'bar');
     }
 
-    public function testExceptionShouldBeThrownWithDuplicateServiceId(): void
+    public function testExceptionShouldBeThrownTryingToSetServiceWithExistingParameterId(): void
     {
         $container = new Container();
 
@@ -125,5 +125,35 @@ class ContainerTest extends TestCase
 
         self::expectException(DuplicateEntryIdentifierException::class);
         $container->set('foo', $this->createMock(ResolverInterface::class));
+    }
+
+    public function testReplacesExistingParameter(): void
+    {
+        $container = new Container();
+
+        $container->parameter('foo', 'bar');
+        self::assertSame('bar', $container->get('foo'));
+
+        $container->parameter('foo', 456);
+        self::assertSame(456, $container->get('foo'));
+    }
+
+    public function testReplacesExistingService(): void
+    {
+        $container = new Container();
+
+        /** @var ResolverInterface&MockObject */
+        $serviceOne = $this->createMock(ResolverInterface::class);
+        $serviceOne->method('resolve')->willReturn('bar');
+
+        $container->set('foo', $serviceOne);
+        self::assertSame('bar', $container->get('foo'));
+
+        /** @var ResolverInterface&MockObject */
+        $serviceTwo = $this->createMock(ResolverInterface::class);
+        $serviceTwo->method('resolve')->willReturn(567);
+
+        $container->set('foo', $serviceTwo);
+        self::assertSame(567, $container->get('foo'));
     }
 }
