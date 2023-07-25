@@ -43,8 +43,8 @@ class ContainerTest extends TestCase
         /** @var ResolverInterface&MockObject */
         $service = $this->createMock(ResolverInterface::class);
         $service->expects(self::once())
-                ->method('resolve')
-                ->with(self::isInstanceOf(Container::class));
+            ->method('resolve')
+            ->with(self::isInstanceOf(Container::class));
 
         $container->set('foo', $service);
         $container->get('foo');
