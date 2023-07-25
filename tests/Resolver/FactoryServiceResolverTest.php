@@ -7,20 +7,22 @@ namespace Phetit\DependencyInjection\Tests\Resolver;
 use Phetit\DependencyInjection\Container;
 use Phetit\DependencyInjection\Resolver\FactoryServiceResolver;
 use Phetit\DependencyInjection\Tests\Fixtures\Service;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class FactoryServiceResolverTest extends TestCase
 {
     public function testResolvesCorrectly(): void
     {
+        $container = $this->createMock(Container::class);
         $service = new FactoryServiceResolver(fn () => 'bar');
 
-        self::assertSame('bar', $service->resolve(new Container()));
+        self::assertSame('bar', $service->resolve($container));
     }
 
     public function testShouldResolveTheDifferentInstance(): void
     {
-        $container = new Container();
+        $container = $this->createMock(Container::class);
         $service = new FactoryServiceResolver(fn () => new Service());
 
         $instanceOne = $service->resolve($container);
@@ -34,8 +36,12 @@ class FactoryServiceResolverTest extends TestCase
 
     public function testShouldPassContainerToCallback(): void
     {
-        $container = new Container();
-        $container->parameter('foo', 'factory-service-resolver');
+        /** @var Container&MockObject */
+        $container = $this->createMock(Container::class);
+        $container->expects(self::once())
+            ->method('get')
+            ->with(self::identicalTo('foo'))
+            ->willReturn('factory-service-resolver');
 
         $service = new FactoryServiceResolver(fn (Container $c) => $c->get('foo'));
 
