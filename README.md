@@ -22,12 +22,12 @@ composer require phetit/dependency-injection
 ```
 ## Usage
 
-Create an instance of `Container` class.
+Create an instance of `ContainerBuilder` class.
 
 ```php
-use Phetit\DependencyInjection\Container;
+use Phetit\DependencyInjection\ContainerBuilder;
 
-$container = new Container();
+$container = new ContainerBuilder();
 ```
 
 ### Register a service
@@ -52,7 +52,7 @@ $foo = $container->get('foo');
 By default all services are shared. This means that services are resolved only the first time `get($id)` method is called. So in following calls you'll get the same object.
 
 ```php
-$container->register('service' fn() => new Service());
+$container->register('service', fn() => new Service());
 
 $serviceOne = $container->get('service'); // Service object
 $serviceTwo = $container->get('service'); // Service object
@@ -63,7 +63,7 @@ $serviceTwo = $container->get('service'); // Service object
 In order to get a new instance on every call, you need to use the `factory()` method:
 
 ```php
-$container->factory('service' fn() => new Service());
+$container->factory('service', fn() => new Service());
 
 $serviceOne = $container->get('service'); // Service object
 $serviceTwo = $container->get('service'); // Service object
