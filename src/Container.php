@@ -45,7 +45,7 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Register parameters that returns the value set
+     * Register a parameter to the container
      *
      * @param string $id Parameter identifier
      * @param mixed $value Parameter value
@@ -58,12 +58,12 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Register a service to the container
+     * Register a service entry to the container
      *
-     * @param string $id Service identifier
+     * @param string $id Entry identifier
      * @param ResolverInterface $resolver The service resolver
      */
-    public function register(string $id, ResolverInterface $resolver): void
+    public function set(string $id, ResolverInterface $resolver): void
     {
         $this->validateIdentifier($id);
 

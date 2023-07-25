@@ -9,6 +9,7 @@
 
 ### Changed
 
+- **Breaking:** rename `register()` method to `set()`
 - **Breaking:** `register()` now receives `Resolver\ResolverInterface` as second parameter
 
 ### Removed

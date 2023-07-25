@@ -31,7 +31,7 @@ class ContainerTest extends TestCase
         $container->parameter('foo', 'bar');
         self::assertTrue($container->has('foo'));
 
-        $container->register('service', $this->createMock(ResolverInterface::class));
+        $container->set('service', $this->createMock(ResolverInterface::class));
         self::assertTrue($container->has('service'));
     }
 
@@ -46,7 +46,7 @@ class ContainerTest extends TestCase
                 ->method('resolve')
                 ->with(self::isInstanceOf(Container::class));
 
-        $container->register('foo', $service);
+        $container->set('foo', $service);
         $container->get('foo');
     }
 
@@ -104,14 +104,14 @@ class ContainerTest extends TestCase
         $container = new Container();
 
         self::expectException(InvalidEntryIdentifierException::class);
-        $container->register('', $this->createMock(ResolverInterface::class));
+        $container->set('', $this->createMock(ResolverInterface::class));
     }
 
     public function testExceptionShouldBeThrownWithDuplicateParameterId(): void
     {
         $container = new Container();
 
-        $container->register('foo', $this->createMock(ResolverInterface::class));
+        $container->set('foo', $this->createMock(ResolverInterface::class));
 
         self::expectException(DuplicateEntryIdentifierException::class);
         $container->parameter('foo', 'bar');
@@ -124,6 +124,6 @@ class ContainerTest extends TestCase
         $container->parameter('foo', 'bar');
 
         self::expectException(DuplicateEntryIdentifierException::class);
-        $container->register('foo', $this->createMock(ResolverInterface::class));
+        $container->set('foo', $this->createMock(ResolverInterface::class));
     }
 }
