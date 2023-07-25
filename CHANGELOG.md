@@ -2,9 +2,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- Add `Resolver\ServiceResolver` class
+- Add `Resolver\FactoryServiceResolver` class
+
 ### Changed
 
-- **Breaking:** `register()` now receives `ResolverInterface` as second parameter
+- **Breaking:** `register()` now receives `Resolver\ResolverInterface` as second parameter
 
 ### Removed
 
