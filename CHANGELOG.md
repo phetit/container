@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Auto inject container reference into container
+
 ## [0.6.0] - 2023-07-25
 
 ### Added
