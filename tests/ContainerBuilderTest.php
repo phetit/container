@@ -6,6 +6,10 @@ namespace Phetit\DependencyInjection\Tests;
 
 use Phetit\DependencyInjection\ContainerBuilder;
 use Phetit\DependencyInjection\Tests\Fixtures\Service;
+use Phetit\DependencyInjection\Tests\Fixtures\ServiceWithDefaultValue;
+use Phetit\DependencyInjection\Tests\Fixtures\ServiceWithDependency;
+use Phetit\DependencyInjection\Tests\Fixtures\ServiceWithNullableDependency;
+use Phetit\DependencyInjection\Tests\Fixtures\ServiceWithoutConstructor;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -49,5 +53,52 @@ class ContainerBuilderTest extends TestCase
 
         self::assertInstanceOf(ContainerBuilder::class, $container);
         self::assertSame($builder, $container);
+    }
+
+    public function testDynamicClassResolution(): void
+    {
+        $builder = new ContainerBuilder();
+
+        $service = $builder->get(Service::class);
+
+        self::assertInstanceOf(Service::class, $service);
+    }
+
+    public function testDynamicClassResolutionWithoutConstructor(): void
+    {
+        $builder = new ContainerBuilder();
+
+        $service = $builder->get(ServiceWithoutConstructor::class);
+
+        self::assertInstanceOf(ServiceWithoutConstructor::class, $service);
+    }
+
+    public function testDynamicClassResolutionWithDependency(): void
+    {
+        $builder = new ContainerBuilder();
+
+        $service = $builder->get(ServiceWithDependency::class);
+
+        self::assertInstanceOf(ServiceWithDependency::class, $service);
+    }
+
+    public function testDynamicClassResolutionWithNullableDependency(): void
+    {
+        $builder = new ContainerBuilder();
+
+        $service = $builder->get(ServiceWithNullableDependency::class);
+
+        self::assertInstanceOf(ServiceWithNullableDependency::class, $service);
+        self::assertNull($service->service);
+    }
+
+    public function testDynamicClassResolutionWithDefaultValue(): void
+    {
+        $builder = new ContainerBuilder();
+
+        $service = $builder->get(ServiceWithDefaultValue::class);
+
+        self::assertInstanceOf(ServiceWithDefaultValue::class, $service);
+        self::assertInstanceOf(ServiceWithoutConstructor::class, $service->service);
     }
 }

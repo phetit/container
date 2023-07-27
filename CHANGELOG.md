@@ -1,9 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [0.7.0] - 2023-07-26
 
 ### Added
 
+- Add support for dynamic class resolution
 - Auto inject container reference into container
 
 ## [0.6.0] - 2023-07-25
@@ -76,7 +77,8 @@
 
 - Changed `EntryNotFoundException` parent from `\InvalidArgumentException` to `NotFoundException`
 
-[Unreleased]: https://github.com/phetit/dependency-injection/compare/v0.6.0...main
+[Unreleased]: https://github.com/phetit/dependency-injection/compare/v0.7.0...main
+[0.7.0]: https://github.com/phetit/dependency-injection/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/phetit/dependency-injection/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/phetit/dependency-injection/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/phetit/dependency-injection/compare/v0.3.0...v0.4.0
