@@ -7,7 +7,7 @@ namespace Phetit\DependencyInjection\Exception\Dependency;
 /**
  * This exception is thrown when a class's dependency fails to be resolved because missing type hint
  */
-class InvalidMissingTypeException extends InvalidTypeException
+class MissingTypeException extends AbstractTypeException
 {
     protected string $formatMessage = 'Failed to resolve class "%s" because parameter "%s" has no type hint';
 }

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Phetit\DependencyInjection;
 
 use Closure;
-use Phetit\DependencyInjection\Exception\Dependency\InvalidBuiltinTypeException;
-use Phetit\DependencyInjection\Exception\Dependency\InvalidIntersectionTypeException;
-use Phetit\DependencyInjection\Exception\Dependency\InvalidMissingTypeException;
-use Phetit\DependencyInjection\Exception\Dependency\InvalidUnionTypeException;
+use Phetit\DependencyInjection\Exception\Dependency\BuiltinTypeException;
+use Phetit\DependencyInjection\Exception\Dependency\IntersectionTypeException;
+use Phetit\DependencyInjection\Exception\Dependency\MissingTypeException;
+use Phetit\DependencyInjection\Exception\Dependency\UnionTypeException;
 use Phetit\DependencyInjection\Exception\EntryNotFoundException;
 use Phetit\DependencyInjection\Resolver\FactoryServiceResolver;
 use Phetit\DependencyInjection\Resolver\ServiceResolver;
@@ -63,7 +63,14 @@ class ContainerBuilder extends Container
         return $this->resolveClass($id);
     }
 
-    protected function resolveClass(string $id): mixed
+    /**
+     * Resolves a class
+     *
+     * @param string $id Class name
+     *
+     * @return object An instance of $id
+     */
+    protected function resolveClass(string $id): object
     {
         $reflectionClass = new ReflectionClass($id);
 
@@ -109,6 +116,11 @@ class ContainerBuilder extends Container
      * @param string $id Class identifier
      * @param ReflectionParameter $parameter
      *
+     * @throws MissingTypeException      If no type hint is specified
+     * @throws UnionTypeException        If dependency is an union type
+     * @throws IntersectionTypeException If dependency is an intersection type
+     * @throws BuiltinTypeException      If dependency is a builtin type
+     *
      * @return mixed
      */
     protected function resolveDependency(string $id, ReflectionParameter $parameter): mixed
@@ -120,7 +132,7 @@ class ContainerBuilder extends Container
         }
 
         if (! $parameter->hasType()) {
-            throw new InvalidMissingTypeException($id, $parameter->name);
+            throw new MissingTypeException($id, $parameter->name);
         }
 
         if ($parameter->allowsNull()) {
@@ -128,15 +140,15 @@ class ContainerBuilder extends Container
         }
 
         if ($type instanceof ReflectionUnionType) {
-            throw new InvalidUnionTypeException($id, $parameter->name);
+            throw new UnionTypeException($id, $parameter->name);
         }
 
         if ($type instanceof ReflectionIntersectionType) {
-            throw new InvalidIntersectionTypeException($id, $parameter->name);
+            throw new IntersectionTypeException($id, $parameter->name);
         }
 
         if (! $type instanceof ReflectionNamedType || $type->isBuiltin()) {
-            throw new InvalidBuiltinTypeException($id, $parameter->name);
+            throw new BuiltinTypeException($id, $parameter->name);
         }
 
         return $this->get($type->getName());

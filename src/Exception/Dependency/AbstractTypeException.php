@@ -9,7 +9,7 @@ use Phetit\DependencyInjection\Exception\ContainerException;
 /**
  * This exception is thrown when a class's dependency fails to be resolved because invalid type
  */
-abstract class InvalidTypeException extends ContainerException
+abstract class AbstractTypeException extends ContainerException
 {
     protected string $formatMessage = 'Failed to resolve class "%s" because invalid type for parameter "%s"';
 
