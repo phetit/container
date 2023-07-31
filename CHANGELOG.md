@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- **Breaking:** rename `InvalidTypeException` to `AbstractTypeException`
+- **Breaking:** rename `InvalidBuiltinTypeException` to `BuiltinTypeException`
+- **Breaking:** rename `InvalidIntersectionTypeException` to `IntersectionTypeException`
+- **Breaking:** rename `InvalidMissingTypeException` to `MissingTypeException`
+- **Breaking:** rename `InvalidUnionTypeException` to `UnionTypeException`
+
 ## [0.7.0] - 2023-07-26
 
 ### Added
