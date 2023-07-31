@@ -49,6 +49,8 @@ class Container implements ContainerInterface
      *
      * @param string $id Parameter identifier
      * @param mixed $value Parameter value
+     *
+     * @throws DuplicateEntryIdentifierException when a service exists with the same $id
      */
     public function parameter(string $id, mixed $value): void
     {
@@ -66,6 +68,8 @@ class Container implements ContainerInterface
      *
      * @param string $id Entry identifier
      * @param ResolverInterface $resolver The service resolver
+     *
+     * @throws DuplicateEntryIdentifierException when a parameter exists with the same $id
      */
     public function set(string $id, ResolverInterface $resolver): void
     {

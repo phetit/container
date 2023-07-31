@@ -20,6 +20,9 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
 
+/**
+ * @template T of object
+ */
 class ContainerBuilder extends Container
 {
     public function __construct()
@@ -27,6 +30,9 @@ class ContainerBuilder extends Container
         $this->parameter(ContainerInterface::class, $this);
     }
 
+    /**
+     * Registers a shared service
+     */
     public function register(string $id, Closure $resolver): static
     {
         $this->set($id, new ServiceResolver($resolver));
@@ -34,6 +40,9 @@ class ContainerBuilder extends Container
         return $this;
     }
 
+    /**
+     * Registers a factory service
+     */
     public function factory(string $id, Closure $resolver): static
     {
         $this->set($id, new FactoryServiceResolver($resolver));
@@ -66,9 +75,9 @@ class ContainerBuilder extends Container
     /**
      * Resolves a class
      *
-     * @param string $id Class name
+     * @param class-string<T> $id Class name
      *
-     * @return object An instance of $id
+     * @return T An instance of $id
      */
     protected function resolveClass(string $id): object
     {
@@ -154,6 +163,9 @@ class ContainerBuilder extends Container
         return $this->get($type->getName());
     }
 
+    /**
+     * Check is class is resolvable
+     */
     protected function isResolvable(string $id): bool
     {
         try {
