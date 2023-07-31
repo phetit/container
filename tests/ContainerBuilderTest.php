@@ -6,10 +6,10 @@ namespace Phetit\DependencyInjection\Tests;
 
 use Phetit\DependencyInjection\ContainerBuilder;
 use Phetit\DependencyInjection\Tests\Fixtures\Service;
-use Phetit\DependencyInjection\Tests\Fixtures\ServiceWithDefaultValue;
-use Phetit\DependencyInjection\Tests\Fixtures\ServiceWithDependency;
-use Phetit\DependencyInjection\Tests\Fixtures\ServiceWithNullableDependency;
-use Phetit\DependencyInjection\Tests\Fixtures\ServiceWithoutConstructor;
+use Phetit\DependencyInjection\Tests\Fixtures\ConstructorWithOptionalArgumentsService;
+use Phetit\DependencyInjection\Tests\Fixtures\ConstructorWithMandatoryArgumentsService;
+use Phetit\DependencyInjection\Tests\Fixtures\ConstructorWithNullableArgumentsService;
+use Phetit\DependencyInjection\Tests\Fixtures\NoConstructorService;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -55,7 +55,7 @@ class ContainerBuilderTest extends TestCase
         self::assertSame($builder, $container);
     }
 
-    public function testDynamicClassResolution(): void
+    public function testClassResolution(): void
     {
         $builder = new ContainerBuilder();
 
@@ -64,41 +64,41 @@ class ContainerBuilderTest extends TestCase
         self::assertInstanceOf(Service::class, $service);
     }
 
-    public function testDynamicClassResolutionWithoutConstructor(): void
+    public function testClassResolutionWitNoConstructor(): void
     {
         $builder = new ContainerBuilder();
 
-        $service = $builder->get(ServiceWithoutConstructor::class);
+        $service = $builder->get(NoConstructorService::class);
 
-        self::assertInstanceOf(ServiceWithoutConstructor::class, $service);
+        self::assertInstanceOf(NoConstructorService::class, $service);
     }
 
-    public function testDynamicClassResolutionWithDependency(): void
+    public function testClassResolutionWithMandatoryArguments(): void
     {
         $builder = new ContainerBuilder();
 
-        $service = $builder->get(ServiceWithDependency::class);
+        $service = $builder->get(ConstructorWithMandatoryArgumentsService::class);
 
-        self::assertInstanceOf(ServiceWithDependency::class, $service);
+        self::assertInstanceOf(ConstructorWithMandatoryArgumentsService::class, $service);
     }
 
-    public function testDynamicClassResolutionWithNullableDependency(): void
+    public function testClassResolutionWithNullableArguments(): void
     {
         $builder = new ContainerBuilder();
 
-        $service = $builder->get(ServiceWithNullableDependency::class);
+        $service = $builder->get(ConstructorWithNullableArgumentsService::class);
 
-        self::assertInstanceOf(ServiceWithNullableDependency::class, $service);
+        self::assertInstanceOf(ConstructorWithNullableArgumentsService::class, $service);
         self::assertNull($service->service);
     }
 
-    public function testDynamicClassResolutionWithDefaultValue(): void
+    public function testClassResolutionWithOptionalArguments(): void
     {
         $builder = new ContainerBuilder();
 
-        $service = $builder->get(ServiceWithDefaultValue::class);
+        $service = $builder->get(ConstructorWithOptionalArgumentsService::class);
 
-        self::assertInstanceOf(ServiceWithDefaultValue::class, $service);
-        self::assertInstanceOf(ServiceWithoutConstructor::class, $service->service);
+        self::assertInstanceOf(ConstructorWithOptionalArgumentsService::class, $service);
+        self::assertInstanceOf(NoConstructorService::class, $service->service);
     }
 }
